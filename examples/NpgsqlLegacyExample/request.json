@@ -606,6 +606,17 @@
                 }
               },
               {
+                "name": "c_qualified_enum",
+                "length": -1,
+                "table": {
+                  "name": "postgres_special_types"
+                },
+                "type": {
+                  "schema": "public",
+                  "name": "c_enum"
+                }
+              },
+              {
                 "name": "c_json",
                 "length": -1,
                 "table": {
@@ -35090,7 +35101,7 @@
       }
     },
     {
-      "text": "\nINSERT INTO postgres_special_types\n(\n    c_json,\n    c_json_string_override,\n    c_jsonb,\n    c_jsonpath,\n    c_xml,\n    c_xml_string_override,\n    c_uuid,\n    c_enum\n)\nVALUES (\n    $1, \n    $2::json, \n    $3,\n    $4::jsonpath,\n    $5::xml,\n    $6::xml,\n    $7,\n    $8::c_enum\n)",
+      "text": "\nINSERT INTO postgres_special_types\n(\n    c_json,\n    c_json_string_override,\n    c_jsonb,\n    c_jsonpath,\n    c_xml,\n    c_xml_string_override,\n    c_uuid,\n    c_enum,\n    c_qualified_enum\n)\nVALUES (\n    $1, \n    $2::json, \n    $3,\n    $4::jsonpath,\n    $5::xml,\n    $6::xml,\n    $7,\n    $8::c_enum,\n    $9::c_enum\n)",
       "name": "InsertPostgresSpecialTypes",
       "cmd": ":exec",
       "parameters": [
@@ -35192,6 +35203,16 @@
               "name": "c_enum"
             }
           }
+        },
+        {
+          "number": 9,
+          "column": {
+            "name": "c_qualified_enum",
+            "length": -1,
+            "type": {
+              "name": "c_enum"
+            }
+          }
         }
       ],
       "comments": [
@@ -35251,7 +35272,7 @@
       "filename": "query.sql"
     },
     {
-      "text": "SELECT\n    c_json,\n    c_json_string_override,\n    c_jsonb,\n    c_jsonpath,\n    c_xml,\n    c_xml_string_override,\n    c_uuid,\n    c_enum\nFROM postgres_special_types \nLIMIT 1",
+      "text": "SELECT\n    c_json,\n    c_json_string_override,\n    c_jsonb,\n    c_jsonpath,\n    c_xml,\n    c_xml_string_override,\n    c_uuid,\n    c_enum,\n    c_qualified_enum\nFROM postgres_special_types \nLIMIT 1",
       "name": "GetPostgresSpecialTypes",
       "cmd": ":one",
       "columns": [
@@ -35344,6 +35365,18 @@
             "name": "c_enum"
           },
           "originalName": "c_enum"
+        },
+        {
+          "name": "c_qualified_enum",
+          "length": -1,
+          "table": {
+            "name": "postgres_special_types"
+          },
+          "type": {
+            "schema": "public",
+            "name": "c_enum"
+          },
+          "originalName": "c_qualified_enum"
         }
       ],
       "filename": "query.sql"

@@ -85,6 +85,7 @@ public class PostgresSpecialType
 {
     public Guid? CUuid { get; init; }
     public CEnum? CEnum { get; init; }
+    public CEnum? CQualifiedEnum { get; init; }
     public JsonElement? CJson { get; init; }
     public JsonElement? CJsonStringOverride { get; init; }
     public JsonElement? CJsonb { get; init; }
