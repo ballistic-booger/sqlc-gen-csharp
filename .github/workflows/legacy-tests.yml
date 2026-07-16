@@ -70,11 +70,8 @@ jobs:
           timeout_minutes: 7
           shell: pwsh
           command: |
-            $mysqlJob = Start-Job -ScriptBlock {
-              # choco has no working 8.4.x mysql package (8.4.6's zip was pulled from cdn.mysql.com,
-              # no 8.4.7+ package exists), so we track the latest available. If this 404s again,
-              # switch to a dedicated setup action (shogo82148/actions-setup-mysql) for version pinning.
-              choco install mysql --no-progress --version=9.6.0 -y --params "/serviceName:MySQL"
+            $mysqlJob = Start-Job -ScriptBlock { 
+              choco install mysql --no-progress -y --params "/serviceName:MySQL" 
               return $LASTEXITCODE
             }
             
