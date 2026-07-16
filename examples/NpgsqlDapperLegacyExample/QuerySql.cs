@@ -1359,7 +1359,8 @@ namespace NpgsqlDapperLegacyExampleGen
                                                                    c_xml,
                                                                    c_xml_string_override,
                                                                    c_uuid,
-                                                                   c_enum
+                                                                   c_enum,
+                                                                   c_qualified_enum
                                                                )
                                                                VALUES (
                                                                    @c_json, 
@@ -1369,7 +1370,8 @@ namespace NpgsqlDapperLegacyExampleGen
                                                                    @c_xml::xml,
                                                                    @c_xml_string_override::xml,
                                                                    @c_uuid,
-                                                                   @c_enum::c_enum
+                                                                   @c_enum::c_enum,
+                                                                   @c_qualified_enum::c_enum
                                                                )";
         public class InsertPostgresSpecialTypesArgs
         {
@@ -1381,6 +1383,7 @@ namespace NpgsqlDapperLegacyExampleGen
             public string CXmlStringOverride { get; set; }
             public Guid? CUuid { get; set; }
             public CEnum? CEnum { get; set; }
+            public CEnum? CQualifiedEnum { get; set; }
         };
         public async Task InsertPostgresSpecialTypesAsync(InsertPostgresSpecialTypesArgs args)
         {
@@ -1393,6 +1396,7 @@ namespace NpgsqlDapperLegacyExampleGen
             queryParams.Add("c_xml_string_override", args.CXmlStringOverride);
             queryParams.Add("c_uuid", args.CUuid);
             queryParams.Add("c_enum", args.CEnum != null ? args.CEnum.Value.Stringify() : null);
+            queryParams.Add("c_qualified_enum", args.CQualifiedEnum != null ? args.CQualifiedEnum.Value.Stringify() : null);
             if (this.Transaction == null)
             {
                 using (var connection = await GetDataSource().OpenConnectionAsync())
@@ -1485,7 +1489,8 @@ namespace NpgsqlDapperLegacyExampleGen
                                                                 c_xml,
                                                                 c_xml_string_override,
                                                                 c_uuid,
-                                                                c_enum
+                                                                c_enum,
+                                                                c_qualified_enum
                                                             FROM postgres_special_types 
                                                             LIMIT 1";
         public class GetPostgresSpecialTypesRow
@@ -1498,6 +1503,7 @@ namespace NpgsqlDapperLegacyExampleGen
             public string CXmlStringOverride { get; set; }
             public Guid? CUuid { get; set; }
             public CEnum? CEnum { get; set; }
+            public CEnum? CQualifiedEnum { get; set; }
         };
         public async Task<GetPostgresSpecialTypesRow> GetPostgresSpecialTypesAsync()
         {

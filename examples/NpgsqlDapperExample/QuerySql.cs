@@ -1358,7 +1358,8 @@ public class QuerySql : IDisposable
                                                                c_xml,
                                                                c_xml_string_override,
                                                                c_uuid,
-                                                               c_enum
+                                                               c_enum,
+                                                               c_qualified_enum
                                                            )
                                                            VALUES (
                                                                @c_json, 
@@ -1368,7 +1369,8 @@ public class QuerySql : IDisposable
                                                                @c_xml::xml,
                                                                @c_xml_string_override::xml,
                                                                @c_uuid,
-                                                               @c_enum::c_enum
+                                                               @c_enum::c_enum,
+                                                               @c_qualified_enum::c_enum
                                                            )";
     public class InsertPostgresSpecialTypesArgs
     {
@@ -1380,6 +1382,7 @@ public class QuerySql : IDisposable
         public string? CXmlStringOverride { get; init; }
         public Guid? CUuid { get; init; }
         public CEnum? CEnum { get; init; }
+        public CEnum? CQualifiedEnum { get; init; }
     };
     public async Task InsertPostgresSpecialTypesAsync(InsertPostgresSpecialTypesArgs args)
     {
@@ -1392,6 +1395,7 @@ public class QuerySql : IDisposable
         queryParams.Add("c_xml_string_override", args.CXmlStringOverride);
         queryParams.Add("c_uuid", args.CUuid);
         queryParams.Add("c_enum", args.CEnum != null ? args.CEnum.Value.Stringify() : null);
+        queryParams.Add("c_qualified_enum", args.CQualifiedEnum != null ? args.CQualifiedEnum.Value.Stringify() : null);
         if (this.Transaction == null)
         {
             using (var connection = await GetDataSource().OpenConnectionAsync())
@@ -1484,7 +1488,8 @@ public class QuerySql : IDisposable
                                                             c_xml,
                                                             c_xml_string_override,
                                                             c_uuid,
-                                                            c_enum
+                                                            c_enum,
+                                                            c_qualified_enum
                                                         FROM postgres_special_types 
                                                         LIMIT 1";
     public class GetPostgresSpecialTypesRow
@@ -1497,6 +1502,7 @@ public class QuerySql : IDisposable
         public string? CXmlStringOverride { get; init; }
         public Guid? CUuid { get; init; }
         public CEnum? CEnum { get; init; }
+        public CEnum? CQualifiedEnum { get; init; }
     };
     public async Task<GetPostgresSpecialTypesRow?> GetPostgresSpecialTypesAsync()
     {
