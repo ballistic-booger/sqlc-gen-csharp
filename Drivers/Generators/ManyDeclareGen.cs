@@ -67,20 +67,10 @@ public class ManyDeclareGen(DbDriver dbDriver)
         var dapperArgs = CommonGen.GetDapperArgs(query);
         var returnType = dbDriver.AddNullableSuffixIfNeeded(returnInterface, true);
 
-        if (dbDriver.Options.WithCancellationToken)
-        {
-            var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
-            return $$"""
-                {{dbDriver.TransactionConnectionNullExcetionThrow}}
-                return (await this.{{transactionProperty}}.Connection.QueryAsync<{{returnType}}>({{callArgs}})).AsList();
-            """;
-        }
-
+        var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
         return $$"""
             {{dbDriver.TransactionConnectionNullExcetionThrow}}
-            return (await this.{{transactionProperty}}.Connection.QueryAsync<{{returnType}}>(
-                    {{sqlVar}}{{dapperArgs}},
-                    transaction: this.{{transactionProperty}})).AsList();
+            return (await this.{{transactionProperty}}.Connection.QueryAsync<{{returnType}}>({{callArgs}})).AsList();
         """;
     }
 

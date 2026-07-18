@@ -59,20 +59,10 @@ public class ExecDeclareGen(DbDriver dbDriver)
     {
         var transactionProperty = Variable.Transaction.AsPropertyName();
         var dapperArgs = CommonGen.GetDapperArgs(query);
-        if (dbDriver.Options.WithCancellationToken)
-        {
-            var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
-            return $$"""
-                        {{dbDriver.TransactionConnectionNullExcetionThrow}}
-                        await this.{{transactionProperty}}.Connection.ExecuteAsync({{callArgs}});
-                     """;
-        }
-
+        var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
         return $$"""
                     {{dbDriver.TransactionConnectionNullExcetionThrow}}
-                    await this.{{transactionProperty}}.Connection.ExecuteAsync(
-                            {{sqlVar}}{{dapperArgs}},
-                            transaction: this.{{transactionProperty}});
+                    await this.{{transactionProperty}}.Connection.ExecuteAsync({{callArgs}});
                  """;
     }
 

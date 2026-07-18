@@ -66,20 +66,10 @@ public class OneDeclareGen(DbDriver dbDriver)
         var dapperArgs = CommonGen.GetDapperArgs(query);
         var returnType = dbDriver.AddNullableSuffixIfNeeded(returnInterface, false);
 
-        if (dbDriver.Options.WithCancellationToken)
-        {
-            var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
-            return $$"""
-                {{dbDriver.TransactionConnectionNullExcetionThrow}}
-                return await this.{{transactionProperty}}.Connection.QueryFirstOrDefaultAsync<{{returnType}}>({{callArgs}});
-            """;
-        }
-
+        var callArgs = dbDriver.Cancellation.WrapDapperArgs($"{sqlVar}{dapperArgs}, transaction: this.{transactionProperty}");
         return $$"""
             {{dbDriver.TransactionConnectionNullExcetionThrow}}
-            return await this.{{transactionProperty}}.Connection.QueryFirstOrDefaultAsync<{{returnType}}>(
-                {{sqlVar}}{{dapperArgs}},
-                transaction: this.{{transactionProperty}});
+            return await this.{{transactionProperty}}.Connection.QueryFirstOrDefaultAsync<{{returnType}}>({{callArgs}});
         """;
     }
 
